@@ -1,0 +1,43 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  .veiculo-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #1a0e0e;
+  }
+  
+  .veiculo-form label {
+    font-weight: bold;
+  }
+  
+  .veiculo-form input,
+  .veiculo-form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .veiculo-form button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .veiculo-form button:hover {
+    background-color: #004c99;
+  }
+  

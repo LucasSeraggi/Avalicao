@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Veículos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+    form {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 30px;
+    }
+    input, textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 6px;
+      font-size: 1rem;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #aa4545;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cadastro de Veículos</h1>
+
+  <form id="form-veiculo">
+    <input type="text" placeholder="Veículo" id="veiculo" required />
+    <input type="text" placeholder="Marca" id="marca" required />
+    <input type="number" placeholder="Ano" id="ano" required />
+    <textarea placeholder="Descrição" id="descricao"></textarea>
+    <label>
+      Vendido <input type="checkbox" id="vendido" />
+    </label>
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <h2>Lista de Veículos</h2>
+  <ul id="lista-veiculos"></ul>
+
+  <script>
+    const form = document.getElementById('form-veiculo')
+    const lista = document.getElementById('lista-veiculos')
+
+    async function carregarVeiculos() {
+      const res = await fetch('/veiculo')
+      console.log(res)
+      const dados = await res.json()
+      lista.innerHTML = ''
+      dados.forEach(v => {
+        const li = document.createElement('li')
+        li.innerHTML = `
+          <strong>${v.veiculo}</strong> (${v.marca}, ${v.ano})<br/>
+          <em>${v.descricao || 'Sem descrição'}</em><br/>
+          Vendido: ${v.vendido ? 'Sim' : 'Não'}
+        `
+        lista.appendChild(li)
+      })
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const novo = {
+        veiculo: form.veiculo.value,
+        marca: form.marca.value,
+        ano: parseInt(form.ano.value),
+        descricao: form.descricao.value,
+        vendido: form.vendido.checked
+      }
+      await fetch('/veiculo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(novo)
+      })
+      form.reset()
+      carregarVeiculos()
+    })
+
+    carregarVeiculos()
+  </script>
+
+</body>
+</html>
